@@ -100,6 +100,8 @@ dependencies {
     implementation(libs.editorkit.language.json)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
+    implementation(libs.androidx.compose.runtime)
+
     "watchImplementation"(libs.androidx.wear.compose.material)
     "watchImplementation"(libs.androidx.wear.compose.foundation)
     "watchImplementation"(libs.androidx.wear.compose.navigation)
