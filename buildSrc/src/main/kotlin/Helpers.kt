@@ -173,6 +173,7 @@ fun Project.setupPlugin(projectName: String) {
                         .replace(project.name, "${projectName}-plugin-$versionName")
                         .replace("-release", "")
                         .replace("-oss", "")
+                        .replace("-watch", "")
                     )
                 }
             }
@@ -205,6 +206,11 @@ fun Project.setupApp() {
         productFlavors.create("oss") {
             minSdk = 24
         }
+        productFlavors.create("watch") {
+            minSdk = 30
+            applicationIdSuffix = ".wear"
+            versionNameSuffix = "-wear"
+        }
         productFlavors.create("legacy") {
             minSdk = 21
             proguardFiles("proguard-rules-legacy.pro")
@@ -232,6 +238,7 @@ fun Project.setupApp() {
                         .replace(project.name, "Exclave-$versionName")
                         .replace("-release", "")
                         .replace("-oss", "")
+                        .replace("-watch", "")
                     )
                 }
             }
@@ -240,12 +247,17 @@ fun Project.setupApp() {
     tasks.configureEach {
         if (name.contains("preBuild")) {
             dependsOn(":app:exportLibraryDefinitionsOssRelease")
+            dependsOn(":app:exportLibraryDefinitionsWatchRelease")
             dependsOn(":app:exportLibraryDefinitionsLegacyRelease")
         }
     }
     if (tasks.findByPath(":app:exportLibraryDefinitionsLegacyRelease") != null
-        && tasks.findByPath(":app:exportLibraryDefinitionsOssRelease") != null) {
+        && tasks.findByPath(":app:exportLibraryDefinitionsOssRelease") != null
+        && tasks.findByPath(":app:exportLibraryDefinitionsWatchRelease") != null) {
         tasks.named(":app:exportLibraryDefinitionsLegacyRelease") {
+            mustRunAfter(":app:exportLibraryDefinitionsOssRelease")
+        }
+        tasks.named(":app:exportLibraryDefinitionsWatchRelease") {
             mustRunAfter(":app:exportLibraryDefinitionsOssRelease")
         }
     }
