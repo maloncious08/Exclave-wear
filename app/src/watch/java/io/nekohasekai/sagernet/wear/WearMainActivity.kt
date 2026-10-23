@@ -27,8 +27,8 @@ import androidx.wear.compose.material.ToggleChip
 import androidx.wear.compose.material.ToggleChipDefaults
 import androidx.wear.compose.material.Switch
 import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.ScalingLazyColumn
-import androidx.wear.compose.material.items
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.ListHeader
 import androidx.wear.compose.foundation.lazy.ScalingLazyListState
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
@@ -112,7 +112,8 @@ class WearMainActivity : ComponentActivity() {
         val url = intent?.getStringExtra("subscription_url")
         if (!url.isNullOrBlank()) {
             val group = ProxyGroup(type = GroupType.SUBSCRIPTION).apply {
-                subscription = SubscriptionBean().apply { link = url; name = "Imported Subscription" }
+                name = "Imported Subscription"
+                subscription = SubscriptionBean().apply { link = url }
             }
             io.nekohasekai.sagernet.ktx.runOnDefaultDispatcher {
                 GroupManager.createGroup(group)
@@ -233,7 +234,7 @@ fun Profiles(activity: WearMainActivity) {
 
     LaunchedEffect(Unit) {
         runOnDefaultDispatcher {
-            profiles = SagerDatabase.proxyDao.allProxies()
+            profiles = SagerDatabase.proxyDao.getAll()
         }
     }
 
