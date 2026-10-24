@@ -103,7 +103,7 @@ class WearMainActivity : ComponentActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         handleIntent(intent)
     }
